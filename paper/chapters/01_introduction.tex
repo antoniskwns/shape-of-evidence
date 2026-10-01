@@ -1,0 +1,163 @@
+%═══════════════════════════════════════════════════════════════════════════════
+\section{Introduction}\label{sec:introduction}
+%═══════════════════════════════════════════════════════════════════════════════
+
+\subsection{From Prediction Sets to Scores}\label{sec:intro_sets}
+
+Consider a decision-maker who must act before an uncertain outcome is known.
+They know which outcomes may occur, which actions are available to take, and what each
+action would cost in each outcome. What they do not know is which outcome will
+occur, so they ask a statistician for evidence.
+
+Call whatever the statistician sends back a report. It might be a shortlist of
+the outcomes still worth taking seriously, or a score for each outcome saying
+how strongly the data count against it. Whatever its form, a report must be
+valid, meaning it must not mislead more often than a pre-agreed error rate allows.
+
+The established way to build such a report is to build a
+prediction set, a shortlist of the outcomes that remain plausible. Conformal
+prediction constructs such sets with a coverage guarantee: for a chosen level
+$\alpha\in(0,1)$, the shortlist $S$ contains the realised outcome $Z$ with
+probability at least $1-\alpha$, that is, $P[Z\in S]\geq1-\alpha$
+\citep{vovk2005,angelopoulos2023conformal}. A cautious decision-maker can then
+protect against the worst thing the shortlist still permits,
+\begin{equation}
+  \delta_S\in\argmin_{d\in\mathcal D}\ \max_{z\in S}L(d,z),
+  \label{eq:intro_set_rule}
+\end{equation}
+writing $L(d,z)$ for what action $d$ costs when outcome $z$ occurs. Whenever
+the realised outcome lies in $S$, the loss of $\delta_S$ cannot exceed the
+worst loss over $S$, so coverage carries over to the decision,
+\begin{equation}
+  P\Big[L(\delta_S,Z)\leq\max_{z\in S}L(\delta_S,z)\Big]\geq1-\alpha .
+  \label{eq:intro_set_guarantee}
+\end{equation}
+This is the basis of certified-decision methods
+\citep{AndrewsChen2025,Kiyani2025}.
+
+This guarantee is genuine, but a shortlist records only membership. Once two
+outcomes are both in it, the set no longer says which one the data support
+more strongly, so the rule treats a barely plausible outcome and a highly
+likely one identically. The recommended action can also change with the
+coverage level even though nothing about the decision has changed.
+
+E-values keep what a shortlist discards. Rather than sorting each outcome in
+or out, they give every outcome its own score $\mathcal E(z)\geq0$, large
+where the data argue against that outcome and small where they do not. The
+collection of these scores, one per outcome, is what the statistician hands
+over. This thesis calls it a profile and writes it $\mathcal E$.
+
+What stops a profile from claiming strong evidence everywhere is a single
+requirement,
+\begin{equation}
+  \mathbb E_{P}[\mathcal E(Z)]\leq 1 ,
+  \label{eq:intro_validity}
+\end{equation}
+that the scores average to at most one under the distribution $P$ the evidence
+is weighed against. Section~\ref{sec:decision} extends this to a whole set
+$\mathcal P$ of distributions.
+
+A profile satisfying this restriction is valid, and a valid profile is also
+called an e-variable. The condition acts as a budget: raising the score on one outcome forces a reduction elsewhere. In return, the scores can be compared against any threshold, even one chosen after they are seen, without losing the guarantee (Section~\ref{sec:evar}). This is the basis of safe
+testing \citep{Shafer2021,Grunwald2024safe,Ramdas2023}. Fuzzy prediction sets
+carry this graded evidence back to the prediction problem, replacing the
+in-or-out verdict of a shortlist with a score for every outcome
+\citep{KoningvanMeer2025,Vovk2025,Gauthier2025}.
+
+\subsection{Two Ways to Judge a Profile}\label{sec:intro_two}
+
+Validity rules out overclaiming, but it leaves a great deal open. Many
+profiles satisfy it, and they need not lead the decision-maker to the same
+action. The statistician must still choose one, and could let what each
+mistake would cost guide that choice. This is where the existing literature
+and the decision-maker part company.
+
+The standard construction compares two distributions. One is $P$, the
+distribution validity is required to hold under. The other is the belief $\widehat P_1$,
+what the decision-maker expects to happen. Their ratio
+\begin{equation}
+  r(z):=\frac{\widehat P_1(z)}{P(z)}
+  \label{eq:intro_lr}
+\end{equation}
+is large where the belief rates an outcome likelier than $P$ does, and the profile is built by passing this ratio through an increasing
+shape function $w$, reporting $\mathcal E(z)=w(r(z))$. 
+
+The usual measure of how much a profile tells us is its expected
+log-evidence under the belief, $\mathbb E_{\widehat P_1}[\log\mathcal E(Z)]$,
+which is high when large scores sit where the belief puts its probability.
+Whenever $P$ gives every outcome positive probability, $w(r)=r$ maximises it
+among valid profiles \citep{Grunwald2024safe,Koning2025continuous}. Statisticians with other preferences over how evidence accumulates choose
+other shape functions, and \citet{KoningvanMeer2025} determine which $w$ is
+best once such a preference is fixed.
+
+However, all of this concerns how much the evidence tells us. It says nothing about
+what happens when the evidence must produce an action. For that,
+\citet{KoningvanMeer2025} score each action by
+\begin{equation}
+  C(d;\mathcal E):=\max_{z\in\mathcal Z}\frac{L(d,z)}{\mathcal E(z)} ,
+  \label{eq:intro_cert}
+\end{equation}
+its largest loss across outcomes, with each loss first divided by the evidence
+against the outcome that would produce it. Validity turns this single number
+into a bound on the action's expected loss, and the decision-maker takes
+whichever action has the smallest one.
+
+Dividing by the score is how evidence lowers the bound. A large score on an
+outcome shrinks the loss the action would suffer there, while a small score
+leaves that loss large. Because of the budget, the scores cannot all be large,
+so a profile has to choose where its large scores go.
+The bound is the worst loss after division, so it stays low only if the large
+scores sit where the action's losses are large.
+
+This is where the standard construction can go wrong. It puts its large
+scores on the outcomes the belief expects, those that $\widehat P_1$ rates
+likelier than $P$ does, and is therefore left with small scores on the
+outcomes the belief considers unlikely. If the action is expensive in
+one of those unlikely outcomes, that loss is not reduced, and the action's
+bound is poor. Which outcomes the belief expects and where the
+decision-maker has most to lose are separate questions, and there is no
+reason their answers should coincide.
+
+An evidence profile can thus be judged in two ways, by the information it preserves, or
+by the protection it gives to a decision. The two judgements need not agree, which leads to
+the research question of the thesis:
+\begin{quote}
+Given a loss function and a stated attitude toward risk, how should a
+statistician choose the e-variable supplied to a decision-maker?
+\end{quote}
+
+\subsection{Contribution}\label{sec:intro_contrib}
+
+Existing theory chooses a profile by a preference over evidence, and cannot
+say which preference represents a given decision-maker's loss. The closest predecessor is
+the e-posterior of \citet{Grunwald2023epost}, which supports frequentist
+decision-making without a prior and already divides a loss by an e-value in
+the manner of \eqref{eq:intro_cert}. Neither supplies a design step in which the loss
+function is an input to the construction of the profile itself. This step is the contribution of
+this thesis, which uses three results to answer the question.
+
+The first asks how low the bound on a chosen action's loss can be pushed. The
+answer is to make the scores proportional to what that action costs in each
+outcome, and the bound then equals that action's largest expected loss across
+the distributions validity must hold under (Theorem~\ref{thm:cert}). No other
+valid profile does as well, and the optimum is unique. Call it the safe
+profile. It is built from the loss and those distributions alone, while the
+belief plays no part in it.
+
+The second result separates informing from inducing. The safe profile
+always leads to the action it protects, unless some other action is cheaper in
+every outcome, but the most informative profile, the likelihood ratio, need
+not, even when the target is the action the belief
+itself favours. Keeping as much information as possible while still reaching
+the target therefore requires imposing the target as a constraint, and the
+optimum then sits where the target ties with a competitor
+(Proposition~\ref{prop:boundary}).
+
+The third asks whether the standard construction could have found the
+safe profile anyway. Since it reads each outcome only through $r$, two
+outcomes with the same likelihood ratio must receive the same score, however
+differently they cost. The safe profile is built from the loss
+and can separate them. The two agree exactly when the loss is determined by
+the ratio (Proposition~\ref{prop:no_shape}). Otherwise, no shape function
+recovers the safe profile, so the loss must enter the design of the
+profile rather than be applied to its output.

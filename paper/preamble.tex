@@ -1,0 +1,157 @@
+% ═════════════════════════════════════════════════════════════════════════════
+%  PREAMBLE
+% ═════════════════════════════════════════════════════════════════════════════
+
+% ── Encoding and fonts ───────────────────────────────────────────────────────
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[english]{babel}
+
+% ── Page geometry ────────────────────────────────────────────────────────────
+% Conventional thesis page: 11pt body, margins near 3 cm with a little extra
+% on the binding edge, giving a measure of roughly 85 characters.
+\usepackage[a4paper, inner=2.9cm, outer=2.7cm, top=2.5cm, bottom=2.7cm,
+            headheight=14pt, headsep=13pt]{geometry}
+\usepackage{setspace}
+% 1.3 keeps the lines clearly separated at this measure while fitting
+% appreciably more text per page than one-and-a-half spacing.
+\setstretch{1.23}
+
+% ── Mathematics ──────────────────────────────────────────────────────────────
+\usepackage{amsmath, amssymb, amsthm}
+% Number equations by section (2.1, 2.2, ...) rather than continuously, so a
+% reference locates the equation as well as naming it.
+\numberwithin{equation}{section}
+
+% ── Tables and figures ───────────────────────────────────────────────────────
+\usepackage{graphicx}
+% Figures have one source of truth: code/figures/. The relative path keeps the
+% paper reproducible without maintaining a second, potentially stale, copy.
+\graphicspath{{../code/figures/}{assets/}{./}}
+\usepackage{booktabs}
+\usepackage{array}
+% Booktabs rules need room to breathe; the default row height crowds them.
+\renewcommand{\arraystretch}{1.18}
+\usepackage{float}
+\usepackage[font=small, labelfont=bf, labelsep=period,
+            width=0.94\textwidth, justification=justified,
+            singlelinecheck=true]{caption}
+
+% ── Lists, headers, references ───────────────────────────────────────────────
+\usepackage{enumitem}
+\setlist[enumerate]{itemsep=2pt, topsep=4pt}
+\setlist[itemize]{itemsep=2pt, topsep=4pt}
+\usepackage{natbib}
+\bibliographystyle{plainnat}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{tocloft}
+% Open up the contents list: entries are few, so they can afford the space.
+\setlength{\cftbeforesecskip}{0.7em}
+\setlength{\cftbeforesubsecskip}{0.25em}
+\renewcommand{\cftsecfont}{\bfseries}
+\renewcommand{\cftsecpagefont}{\bfseries}
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+\renewcommand{\cftsubsecleader}{\hfill}
+\renewcommand{\cftsubsecafterpnum}{\hspace*{0pt}}
+\usepackage{microtype}
+
+% ── Hyperlinks (loaded late) ─────────────────────────────────────────────────
+\usepackage{xcolor}
+\definecolor{linknavy}{RGB}{20,60,110}
+\definecolor{citeink}{RGB}{55,70,95}
+\usepackage[hidelinks]{hyperref}
+% Long dataset URLs cannot be hyphenated; let them break at any character so a
+% single reference does not force loose lines through the whole entry.
+\usepackage{url}
+\def\UrlBreaks{\do\/\do-\do.\do:\do_\do?\do\&\do=\do+}
+\Urlmuskip=0mu plus 2mu
+\hypersetup{
+  colorlinks = true,
+  linkcolor  = citeink,
+  citecolor  = citeink,
+  urlcolor   = linknavy,
+  pdftitle   = {The Shape of Evidence: Fuzzy Prediction Sets for Downstream Decisions},
+  pdfauthor  = {Antonis Konstantinidis},
+  bookmarksnumbered = true
+}
+
+% ═════════════════════════════════════════════════════════════════════════════
+%  STYLING
+% ═════════════════════════════════════════════════════════════════════════════
+
+% Running header: section name left, page number right, set in small caps so
+% it recedes behind the text rather than competing with the headings.
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\footnotesize\scshape\nouppercase{\leftmark}}
+\fancyhead[R]{\footnotesize\thepage}
+\fancypagestyle{plain}{\fancyhf{}\renewcommand{\headrulewidth}{0pt}%
+  \fancyfoot[C]{\footnotesize\thepage}}
+
+% Section headings. Generous space above, tighter below, so each heading binds
+% to the text it introduces rather than floating between blocks.
+\titleformat{\section}{\normalfont\Large\bfseries}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\normalfont\large\bfseries}{\thesubsection}{0.7em}{}
+% Every major section starts on a new page. Subsections remain attached to the
+% surrounding text because they mark divisions within a section, not new
+% chapters.
+\titlespacing*{\section}{0pt}{3.4ex plus 1ex minus .3ex}{1.5ex plus .2ex}
+\titlespacing*{\subsection}{0pt}{2.4ex plus .8ex minus .2ex}{0.9ex plus .2ex}
+\newcommand{\sectionbreak}{\clearpage}
+
+% Floats: keep them clear of the surrounding text.
+\setlength{\textfloatsep}{14pt plus 3pt minus 3pt}
+\setlength{\intextsep}{12pt plus 3pt minus 3pt}
+\setlength{\abovecaptionskip}{7pt}
+\setlength{\belowcaptionskip}{2pt}
+
+% Display equations and the operators inside them get more air. Size commands
+% reset the display skips, so they are reapplied whenever \normalsize runs.
+\newcommand{\displayair}{%
+  \setlength{\abovedisplayskip}{13pt plus 3pt minus 2pt}%
+  \setlength{\belowdisplayskip}{13pt plus 3pt minus 2pt}%
+  \setlength{\abovedisplayshortskip}{8pt plus 3pt}%
+  \setlength{\belowdisplayshortskip}{10pt plus 3pt}}
+\usepackage{etoolbox}
+\appto{\normalsize}{\displayair}
+\AtBeginDocument{\displayair}
+\setlength{\jot}{6pt}
+\medmuskip=4.5mu plus 2mu minus 2mu
+\thickmuskip=6mu plus 4mu minus 1mu
+
+% Discourage widows and orphans.
+\widowpenalty=10000
+\clubpenalty=10000
+
+% ═════════════════════════════════════════════════════════════════════════════
+%  THEOREM ENVIRONMENTS
+% ═════════════════════════════════════════════════════════════════════════════
+% Theorem-like results are separated from the prose that frames them.
+\newlength{\thmsep}\setlength{\thmsep}{1.1\baselineskip}
+\makeatletter
+\def\thm@space@setup{%
+  \thm@preskip=\thmsep \thm@postskip=\thmsep}
+\makeatother
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+% ═════════════════════════════════════════════════════════════════════════════
+%  MATH SHORTHAND
+% ═════════════════════════════════════════════════════════════════════════════
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+% Auto-updating "Month Year"
+\newcommand{\monthyear}{%
+  \ifcase\month\or January\or February\or March\or April\or May\or June\or
+  July\or August\or September\or October\or November\or December\fi
+  \space\number\year}

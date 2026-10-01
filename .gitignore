@@ -1,0 +1,24 @@
+# LaTeX build files (make rebuilds them)
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.synctex.gz
+*.toc
+*.run.xml
+
+# Python
+__pycache__/
+*.pyc
+
+# macOS
+.DS_Store
+
+# Not part of the public repository: supervisor feedback, copies of the
+# cited papers, and the submission archive.
+feedback/
+literature/
+*.zip

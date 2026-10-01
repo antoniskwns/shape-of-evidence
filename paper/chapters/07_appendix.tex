@@ -1,0 +1,37 @@
+\newpage
+%═══════════════════════════════════════════════════════════════════════════════
+\section{Notation}\label{app:proofs}
+%═══════════════════════════════════════════════════════════════════════════════
+
+\begin{table}[htbp]
+\centering
+\caption{Notation used in the thesis.}
+\small
+\begin{tabular}{@{}l>{\raggedright\arraybackslash}p{0.72\textwidth}@{}}\toprule
+Symbol & Meaning \\\midrule
+$\mathcal Z$ & Outcome space \\
+$\mathcal D$ & Action space \\
+$\mathcal P$ & Model: the distributions validity must hold under \\
+$P_0$ & The single member of a one-point model $\mathcal P=\{P_0\}$ \\
+$\widehat P_1$ & Belief: the distribution the decision-maker thinks is true \\
+$P_{\mathrm{true}}$ & Distribution generating outcomes in the simulations of Section~\ref{sec:simulations} \\
+$P^\star$ & Member of $\mathcal P$ making the target action look worst \\
+$L(d,z)$ & Loss of action $d$ when outcome $z$ occurs \\
+$\mathcal E(z)$ & E-value assigned to candidate outcome $z$ \\
+$r(z)$ & Likelihood ratio $\widehat P_1(z)/P^\star(z)$ \\
+$w(\cdot)$ & Shape function, giving $\mathcal E(z)=w(r(z))$ \\
+$w_h$ & Capped power shape with curvature $h$ and scale $\lambda$ \\
+$S$ & Prediction set \\
+$s,s^{\mathrm e},a,a^{\mathrm e}$ & Outcomes of the application: Spain or Argentina winning within ninety minutes, or later \\
+$t$ & Share of the budget placed on $A$ along the two-outcome frontier \\
+$C(d;\mathcal E)$ & Weighted worst-case certificate \\
+$\mu_d$ & Worst expected loss $\max_{P\in\mathcal P}\mathbb E_{P}[L(d,Z)]$ \\
+$\mathcal E_d^{\mathrm{safe}}$ & Safe profile for $d$, $L(d,\cdot)/\mu_d$ \\
+$\mathcal E^{\mathrm{info}}$ & Constrained information-optimal profile \\
+$\mathcal E^{\mathrm{flat}}$ & Flat profile, equal e-value at every outcome \\
+$d^\star$ & Target action the profile is designed to induce \\
+$\delta(\mathcal E)$ & Action selected by the weighted worst-case rule \\
+$\alpha$ & Level at which a profile is thresholded, $\mathcal E\geq1/\alpha$, and the cap in $w_h$ \\
+$\ell,k$ & Cost of a losing bet and of hedging, in Section~\ref{sec:sim_window} \\
+\bottomrule\end{tabular}
+\end{table}

@@ -1,0 +1,299 @@
+%═══════════════════════════════════════════════════════════════════════════════
+\section{Application: Stocking Shirts for the World Cup Final}\label{sec:market}
+%═══════════════════════════════════════════════════════════════════════════════
+
+Every example so far has stipulated its distributions. This section applies
+the procedure of Section~\ref{sec:recipe} to real data, taking the belief from
+Polymarket prices for the 2026 FIFA World Cup final between Spain and
+Argentina \citep{Marketlens2026}. The decision-maker is a shopkeeper near the
+stadium who orders replica shirts before the final and cannot reorder
+afterwards. Shirts of the winning side sell and the rest are marked down. The
+shopkeeper does not bet on the match and uses the prices only as a forecast,
+so the cost of an order depends on how well it matches demand, never on the
+prices themselves.
+
+The section reaches one finding. Under the market's forecast the cheapest
+order is mostly Spain shirts, yet no increasing reshaping of the likelihood
+ratio leads to that order, across two extensive searches, while the safe
+profile does. The reason is where each places its evidence. Protecting a
+Spain-heavy order needs large scores on the Argentina outcomes, where that
+order is ruinous. A reshaped likelihood ratio puts its largest score on a
+Spain win within ninety minutes, where the market is most confident and the order
+costs almost nothing. This is Result 2 in real data: the profile that best
+reflects the belief leads away from the action the belief recommends.
+
+\subsection{Two Contracts, Four Outcomes}\label{sec:mkt_data}
+
+Two contracts were traded on the final, each settling on a different
+question. A three-way result market pays out on the score after ninety
+minutes, so a match still level then settles as a draw. A binary trophy
+market pays out on whichever side eventually lifts the cup. Together they
+tell the shopkeeper which side wins and whether the match is decided within
+ninety minutes, and both affect how many shirts sell.
+
+Figure~\ref{fig:market_odds} shows the two on one timeline. Prices are
+recorded every minute of clock time, so breaks in play appear as gaps, which
+is why the goal in the $106$th minute of play falls more than two hours after
+kick-off. The two series part at the end of regulation. With the match level
+the draw contract settles and the result market stops moving, while the
+trophy market stays live and Spain's extra-time goal lifts their price from
+about $0.60$ to over $0.90$. These are traded prices, not e-values.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.92\textwidth]{polymarket_match_odds.pdf}
+\caption{Two Polymarket contracts on the same match, from kick-off to settlement. The dashed line marks the end of regulation, the dotted line the goal.}\label{fig:market_odds}
+\end{figure}
+
+At kick-off the result market quoted
+\[
+  q=(0.4231,\;0.3238,\;0.2531)
+\]
+for a Spain win, a draw and an Argentina win, and the trophy market quoted
+$o=(0.5863,\,0.4137)$ for Spain and Argentina. Each number is the midpoint of
+the best bid and ask. Midpoints of separately traded contracts need not sum to
+one, so each set is rescaled to sum to one, here and in
+Figure~\ref{fig:market_odds}. The data also record how both contracts
+settled: the draw contract paid out, and the trophy went to Spain
+\citep{Marketlens2026}.
+
+Read together, the two contracts describe four outcomes,
+\[
+  \mathcal Z=\{s,\;s^{\mathrm e},\;a,\;a^{\mathrm e}\},
+\]
+where $s$ is a Spain win within ninety minutes, $s^{\mathrm e}$ a Spain win
+after extra time or penalties, and $a$ and $a^{\mathrm e}$ the same for
+Argentina. Four outcomes need three numbers, and the two contracts supply
+exactly three. The result market gives the two wins within ninety minutes
+directly, and subtracting these from the trophy prices leaves the probability
+of each side winning later:
+\begin{equation}
+  \widehat P_1(s)=q_1,\quad
+  \widehat P_1(s^{\mathrm e})=o_1-q_1,\quad
+  \widehat P_1(a)=q_3,\quad
+  \widehat P_1(a^{\mathrm e})=o_2-q_3.
+  \label{eq:market_ident}
+\end{equation}
+A match level after ninety minutes must eventually be won by someone, so the
+two late wins should together account for the draw price, and they do:
+$0.1632+0.1606=0.3238=q_2$. This holds by construction, since both sets of
+prices were rescaled to sum to one, so it checks the arithmetic rather than
+the market. The contracts cannot tell extra time from penalties, and nothing
+below depends on that distinction.
+
+These prices give the belief only. The model, the set of distributions the
+guarantee must hold under, is not read from the prices at all. It is built
+separately in the next subsection.
+
+\subsection{The Model and the Belief}\label{sec:mkt_dists}
+
+The procedure needs a belief and a model, and they do different jobs. The
+belief is the shopkeeper's best guess at what will happen, and it decides
+which order looks cheapest. The model is the set of distributions the
+guarantee must hold up against, and it decides how strong a guarantee any
+profile can give. Both must be fixed before kick-off, when the order is
+placed.
+
+The belief is the market's view at kick-off. Applying \eqref{eq:market_ident}
+to the opening quotes gives
+\[
+  \widehat P_1=(0.4231,\;0.1632,\;0.2531,\;0.1606).
+\]
+Later prices cannot replace it. They absorb the match as it is played, and by
+the end nearly all their probability sits on the outcome that happened, so
+they report the result rather than forecast it.
+
+The model needs more explanation. The guarantee is meant to hold even if the
+market is wrong about this match, so the model cannot simply be the market's
+forecast, or the guarantee would be only as good as the market. Instead it
+collects a few distributions built from information available before the two
+finalists were known, and the guarantee must hold under all of them.
+These are not meant to be better forecasts than the market, which is better
+informed. They are the alternatives the shopkeeper wants to be protected
+against.
+
+Each member splits the probability between the two sides, and then splits
+each side between winning within ninety minutes and winning later. Three
+splits between the sides are used: Polymarket's tournament-winner prices
+early in the group stage, $0.138$ for Spain and $0.116$ for Argentina
+\citep{PolymarketWinner2026}, rescaled to sum to one as
+$(0.5433,0.4567)$, an even split, and $(0.45,0.55)$, leaning to Argentina. The share of matches decided later
+comes from history. Of the twenty-one World Cup finals played as a single
+deciding match between 1930 and 2022, eight went beyond ninety minutes
+\citep{WCfinalsList}, a rate of $8/21=0.381$. The 1950 tournament is excluded
+because it ended with a final group stage rather than a final. For the first
+split this gives
+\[
+\begin{aligned}
+  P&=\bigl(0.5433\,(0.619),\;0.5433\,(0.381),\;
+             0.4567\,(0.619),\;0.4567\,(0.381)\bigr)\\
+   &=(0.3363,\;0.2070,\;0.2827,\;0.1740),
+\end{aligned}
+\]
+and the other two follow in the same way, so
+\[
+\begin{aligned}
+  \mathcal P=\bigl\{&(0.3363,\;0.2070,\;0.2827,\;0.1740),\\
+                    &(0.3095,\;0.1905,\;0.3095,\;0.1905),\\
+                    &(0.2786,\;0.1714,\;0.3405,\;0.2095)\bigr\}.
+\end{aligned}
+\]
+
+The model is deliberately more cautious than the belief. The market puts
+$0.4231$ on a Spain win within ninety minutes, while no member of the model
+goes above $0.3363$. By Theorem~\ref{thm:cert}, only one member matters for a
+given order, the one under which that order looks worst, and
+Section~\ref{sec:mkt_shape} checks that the findings survive changes to the
+historical rate.
+
+\subsection{The Two Criteria Disagree}\label{sec:mkt_decision}
+
+The shopkeeper has room for one hundred shirts and must split them between the
+two sides. Three orders are considered: mostly Spain ($d_1$, ninety Spain
+shirts), an even split ($d_2$, fifty) and mostly Argentina ($d_3$, twenty).
+Each shirt short of demand costs the lost margin, three units, and each shirt
+left unsold costs the markdown, one unit.
+
+Demand depends on the outcome. Only the winning side's shirts sell well, and a
+win after extra time is a bigger occasion, so it sells more. Demand for the
+winner's shirts is taken as eighty after a win within ninety minutes and one
+hundred after a later win, with ten of the losing side either way. The cost of
+each order then follows by arithmetic. In tens of units, for the outcomes
+$(s,s^{\mathrm e},a,a^{\mathrm e})$,
+\[
+ L(d_1,\cdot)=(1,3,29,35),\quad
+ L(d_2,\cdot)=(13,19,13,19),\quad
+ L(d_3,\cdot)=(25,31,1,7).
+\]
+
+For example, ordering mostly Spain when Spain win within ninety minutes leaves
+ten Spain shirts unsold, a cost of ten units, or $1$ in the table. Ordering
+mostly Spain is cheap when Spain win and ruinous when Argentina do. The even
+split is never cheap and never ruinous, and its cost depends only on when the
+match is decided, not on who wins. No price appears anywhere in the table: the
+market says what is likely, and the shirts say what it costs to be wrong.
+
+Step one compares the orders in the two ways of Section~\ref{sec:recipe}, by
+worst-case expected loss across the model and by expected loss under the
+belief,
+\[
+\begin{aligned}
+  \max_{P\in\mathcal P}\mathbb E_{P}[L(\cdot,Z)]&=(18.0000,\;15.2857,\;16.3251),\\
+  \mathbb E_{\widehat P_1}[L(\cdot,Z)]&=(13.8738,\;14.9430,\;17.0142).
+\end{aligned}
+\]
+The two disagree. The protective action is the even split $d_2$, the order
+that cannot go badly wrong. The belief recommends mostly Spain, $d_1$, because
+the market makes Spain the likelier winner. This is the case the thesis is
+about.
+
+Step two takes $d_1$ as the target, the choice of a belief-trusting
+shopkeeper. The worst member of the model for $d_1$ is the one leaning to
+Argentina,
+\[
+  P^\star=(0.2786,\;0.1714,\;0.3405,\;0.2095),
+\]
+under which
+\[
+  \mu_{d_1}=1\,(0.2786)+3\,(0.1714)+29\,(0.3405)+35\,(0.2095)=18.0000,
+\]
+so the safe profile of Theorem~\ref{thm:cert} divides the losses of $d_1$ by
+$18$,
+\begin{equation}
+  \mathcal E^{\mathrm{safe}}_{d_1}
+  =\frac{(1,3,29,35)}{18}
+  =(0.0556,\;0.1667,\;1.6111,\;1.9444).
+  \label{eq:market_safe}
+\end{equation}
+It puts most of its e-value on the two Argentina outcomes, where $d_1$ is most
+exposed. Its certificate is $18$, and since $d_1$ is the action the belief
+recommends, Corollary~\ref{cor:select} guarantees that it leads to $d_1$.
+Table~\ref{tab:market} compares it with the profiles an evidence-first
+statistician would report. The likelihood ratio there is taken against
+$P^\star$ and scaled down by a factor of $1.051$, so that it is valid under
+every member of the model.
+
+\begin{table}[htbp]
+\centering
+\caption{The shopkeeper's order. Certificates $C_j$ of each order under each profile, the order the rule selects, and that order's expected loss under the kick-off belief.}\label{tab:market}
+\begin{tabular}{@{}l r r r c r@{}}\toprule
+Profile & $C_1$ & $C_2$ & $C_3$ & Action & $\mathbb E_{\widehat P_1}[L]$ \\\midrule
+Likelihood ratio          & 48.002 & 26.058 & 34.233 & $d_2$ & 14.943 \\
+Flat                      & 35.000 & 19.000 & 31.000 & $d_2$ & 14.943 \\
+Safe for $d_2$            & 34.099 & 15.286 & 29.396 & $d_2$ & 14.943 \\
+Safe for $d_1$            & 18.000 & 234.000 & 450.000 & $d_1$ & 13.874 \\\bottomrule
+\end{tabular}
+\end{table}
+
+Only the safe profile for $d_1$ leads to $d_1$. The likelihood ratio and the
+flat profile both leave the shopkeeper with the even split, and so does the
+safe profile for $d_2$. This is the failure Section~\ref{sec:result2} warned
+of: the likelihood ratio does not lead to the action the belief itself
+recommends. Measured under the belief, that costs the shopkeeper about $1.07$
+in expected loss, $14.943$ against $13.874$. The prediction-set rule of
+Section~\ref{sec:intro_sets} does no better: at every coverage level from
+$50\%$ to $95\%$ it also chooses the even split.
+
+\subsection{No Increasing Shape Reaches the Target}\label{sec:mkt_shape}
+
+Only the safe profile led to the order the belief recommends. A natural
+objection is that the standard construction was not tried hard enough, and
+that some other shape function would have led to $d_1$ as well. This
+subsection shows that none does.
+
+The standard construction reshapes the likelihood ratio of the belief against
+the member of the model under which validity binds, here the worst member
+$P^\star$, so
+\[
+  r=\frac{\widehat P_1}{P^\star}=(1.5188,\;0.9521,\;0.7433,\;0.7666).
+\]
+The ratio takes a different value at every outcome, so
+Proposition~\ref{prop:no_shape} does not rule out writing the safe profile as
+$w(r)$.
+
+The obstacle is the second one described after that proposition. The
+shape functions used in practice are increasing in $r$, so they rank the
+outcomes as $r$ does,
+\[
+  a\ \prec\ a^{\mathrm e}\ \prec\ s^{\mathrm e}\ \prec\ s ,
+\]
+giving the most e-value to $s$, the outcome the belief rates likeliest
+relative to the model. The loss of $d_1$ ranks them almost the other way,
+\[
+  s\ \prec\ s^{\mathrm e}\ \prec\ a\ \prec\ a^{\mathrm e} .
+\]
+To keep the certificate of $d_1$ low, the profile must put its largest
+e-value on the two Argentina outcomes, where ordering mostly Spain is ruinous.
+An increasing shape does the opposite. It puts its largest e-value on $s$,
+where the order costs almost nothing, and its smallest on $a$ and
+$a^{\mathrm e}$, where the order is most exposed. The safe profile
+\eqref{eq:market_safe} reverses this, which is why it is not increasing in $r$.
+
+Failing to match the safe profile exactly is not the same as failing to reach
+$d_1$, so the question is settled by searching over shapes directly. Two
+searches are run, both keeping every profile valid with its budget fully
+spent, so that only the shape varies. The first covers the capped power
+family \eqref{eq:power_shape} of Section~\ref{sec:result3}, sweeping $120$
+values of $h$ in $[-6,0.95]$ against $60$ values of $\alpha$ in
+$[0.01,0.95]$, a total of $7{,}200$ combinations, with $\lambda$ set by
+bisection. The second drops the parametric form altogether. It draws
+$200{,}000$ profiles by sampling four values uniformly, sorting them and
+assigning them to the outcomes in increasing order of $r$, which gives a
+random increasing shape.
+
+Neither search ever reaches $d_1$. Every shape tried leads to the even split
+or to mostly Argentina. Restricting to increasing shapes therefore does not
+merely make $d_1$ more expensive to protect. It puts $d_1$ out of reach
+altogether, while the safe profile reaches it with certificate $18$.
+
+One input is left to the analyst, the historical rate at which finals go
+beyond ninety minutes. Repeating the analysis for rates from $6/21$ to
+$10/21$, two finals either side of the observed $8/21$, the two criteria
+disagree at all five rates, and at all five no capped power shape reaches
+$d_1$. The finding does not depend on that choice.
+
+What the application cannot show is which criterion was right. Spain won
+after extra time \citep{AlJazeera2026final}, the outcome $s^{\mathrm e}$, in which
+ordering mostly Spain costs $3$ and the even split $19$. But a single match is
+not a verdict on a decision rule. Settling that requires a setting where the
+truth is known in advance.

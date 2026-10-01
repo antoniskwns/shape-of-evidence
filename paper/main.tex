@@ -1,0 +1,120 @@
+% ═════════════════════════════════════════════════════════════════════════════
+%  The Shape of Evidence: Fuzzy Prediction Sets for Downstream Decisions
+%  MSc Quantitative Finance, Erasmus School of Economics
+%
+%  Build:  pdflatex main  ->  bibtex main  ->  pdflatex main  ->  pdflatex main
+%  Figures in ../code/figures/ are produced by decision_pipeline.py
+% ═════════════════════════════════════════════════════════════════════════════
+\documentclass[11pt, a4paper]{article}
+
+\input{preamble}
+
+\begin{document}
+
+% ── TITLE PAGE ───────────────────────────────────────────────────────────────
+\begin{titlepage}
+\centering
+\thispagestyle{empty}
+\hypersetup{pageanchor=false}
+% The body measure is wide for density; a title page set to that full width
+% looks stretched, so the whole block is inset and centred on the page.
+\newlength{\titlemeasure}\setlength{\titlemeasure}{0.78\textwidth}
+\begin{minipage}[c][0.96\textheight][s]{\titlemeasure}
+\centering
+
+\includegraphics[width=5.2cm]{assets/eur.png}\\[1.6em]
+{\scshape\large Erasmus School of Economics}\\[0.35em]
+{\scshape MSc Quantitative Finance}\\[0.35em]
+{\small Academic Year 2025--2026}
+
+\vfill
+
+\rule{\titlemeasure}{1.2pt}\\[1.1em]
+{\Huge\bfseries The Shape of Evidence}\\[0.9em]
+{\LARGE Fuzzy Prediction Sets for Downstream Decisions}\\[1.1em]
+\rule{\titlemeasure}{1.2pt}
+
+\vspace{2.2em}
+
+{\large\bfseries Antonis Konstantinidis}\\[0.4em]
+{\small Student ID: 656699}
+
+\vfill
+
+\begin{tabular}{@{}r@{\hskip 1.2em}l@{}}
+\textit{Supervisor} & Dr.\ Nick Koning \\[0.3em]
+\textit{Date}       & \monthyear
+\end{tabular}\par
+\end{minipage}
+
+\end{titlepage}
+
+% ── FRONT MATTER ─────────────────────────────────────────────────────────────
+\pagenumbering{roman}
+\setcounter{page}{2}
+\hypersetup{pageanchor=true}
+
+% Abstract set on its own page, inset from the body measure so it reads as a
+% standalone summary rather than a stray first page.
+\thispagestyle{empty}
+\begin{center}
+\begin{minipage}{0.80\textwidth}
+\setlength{\parindent}{1.5em}
+\begin{center}\large\bfseries Abstract\end{center}
+\vspace{0.6em}
+\begin{spacing}{1.15}
+\noindent\input{chapters/00_abstract}
+\end{spacing}
+
+\vspace{2.2em}
+\begin{center}\bfseries Acknowledgements\end{center}
+\vspace{0.4em}
+\begin{spacing}{1.15}
+\noindent I would like to thank my supervisor, Dr.\ Nick Koning, for his guidance
+and constructive feedback throughout this thesis. His support was instrumental
+in shaping the direction and clarity of my work. I also extend my appreciation
+to the staff and students of the Erasmus School of Economics for providing a
+stimulating and supportive academic environment.
+\end{spacing}
+\end{minipage}
+\end{center}
+\vfill
+
+\newpage
+\begin{spacing}{1.06}
+\tableofcontents
+\end{spacing}
+
+% ── BODY ─────────────────────────────────────────────────────────────────────
+\pagenumbering{arabic}
+
+\input{chapters/01_introduction}
+\input{chapters/02_framework}
+\input{chapters/03_design}
+\input{chapters/04_evidence}
+\input{chapters/05_simulations}
+\input{chapters/06_discussion}
+
+% ── REFERENCES ───────────────────────────────────────────────────────────────
+\newpage
+\addcontentsline{toc}{section}{References}
+\begingroup
+% Long URLs need break freedom, but the entries themselves set justified and
+% a little tighter, so the list does not spill an orphan onto its own page.
+% Reference entries mix prose with unbreakable URLs, so a justified setting
+% leaves loose lines at this measure. Ragged right keeps the word spacing even.
+\sloppy
+\setlength{\emergencystretch}{3em}
+\raggedright
+\setstretch{1.06}
+\setlength{\bibsep}{0.7em}
+% Reference list set one point below the 11pt body.
+\fontsize{10}{12}\selectfont
+\bibliography{bibliography}
+\endgroup
+
+% ── APPENDIX ─────────────────────────────────────────────────────────────────
+\appendix
+\input{chapters/07_appendix}
+
+\end{document}

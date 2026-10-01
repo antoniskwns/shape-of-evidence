@@ -1,0 +1,23 @@
+Sound statistical evidence does not guarantee good decisions. Consider a
+decision-maker whose loss depends on which outcome occurs. They ask a
+statistician for a report that scores each outcome by how strongly the data
+count against it, and the report must be valid, misleading no more often than
+a pre-agreed rate. Many reports may be valid, yet recommend different actions.
+Existing theory picks the report that accumulates evidence fastest, without
+considering the decision-maker's losses at stake. This thesis instead asks which report to
+choose when such loss function is known in advance.
+
+Each report bounds an action's expected loss. The ``safe'' report minimises
+this bound by scoring outcomes in proportion to the action's losses, and
+leads to the action it ``protects''. By contrast, the report that
+accumulates evidence fastest may recommend a different action, in which case
+the protected action must be imposed as a constraint. That report scores
+outcomes by how much likelier the data make them, and recovers the safe report
+only when losses follow those likelihoods.
+
+For a shopkeeper ordering shirts before the 2026 World Cup final, with
+Polymarket prices as the forecast, no likelihood-based report found in two
+searches selects the order the forecast recommends, unlike the safe report. In
+controlled simulations, the likelihood-based report picks the wrong action
+even when the forecast is right. Losses belong in the design of evidence, not
+its interpretation.

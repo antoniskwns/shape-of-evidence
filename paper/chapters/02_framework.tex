@@ -1,0 +1,221 @@
+%═══════════════════════════════════════════════════════════════════════════════
+\section{Theoretical Framework}\label{sec:decision}
+%═══════════════════════════════════════════════════════════════════════════════
+
+\subsection{The Decision Problem}\label{sec:problem}
+
+Let $Z$ be an unknown outcome in a finite outcome space $\mathcal Z$, and let
+$d\in\mathcal D$ be an action chosen before $Z$ is observed. The loss
+$L(d,z)\geq0$ is what choosing $d$ costs when the outcome turns out to be $z$.
+The decision-maker supplies this loss table, and it records which mistakes
+matter and by how much. With finitely many outcomes the table is a grid of
+numbers, one per action and outcome, and $L(d,\cdot)$ denotes the row for
+action $d$, listing what that action costs in each outcome in turn.
+
+Uncertainty about outcome $Z$ enters in two separate places. The first is the model $\mathcal P$, a set of distributions any one of which
+could be the true one. The decision-maker is unwilling to stake the guarantee
+on a single distribution, so the report is required to be valid under every
+member at once. As $\mathcal P$ gets larger, the statement about what
+the world might be doing becomes more cautious, and it buys a weaker guarantee in return.
+
+The second is the belief $\widehat P_1$, the single distribution the
+decision-maker actually thinks is true, formed before any data is collected.
+It carries no guarantee whatever. Intuitively, it is simply what they would act on ``if
+nothing could go wrong''.
+
+The two do different jobs. The model says what the report must survive, the
+belief says what it should be good at. They are not competing estimates of one
+quantity, and the thesis is about what happens when they disagree about which
+action to take. Two standing assumptions apply throughout: every distribution
+in $\mathcal P$ gives every outcome positive probability, so each expected
+loss is a finite sum, and every expectation is taken under the distribution
+named in its subscript.
+
+\subsection{Evidence Profiles and Validity}\label{sec:evar}
+
+A profile $\mathcal E$ is a valid e-variable for the model $\mathcal P$ when
+\begin{equation}
+  \mathbb E_{P}[\mathcal E(Z)]\leq1
+  \qquad\text{for every }P\in\mathcal P .
+  \label{eq:evalue_def}
+\end{equation}
+
+Read as a budget, the condition gives the profile one unit of e-value to spend
+on average. Nothing dictates how that unit is spread across outcomes, and how to spread it is precisely the design problem of this
+thesis. Constructing a valid profile from raw data is a separate problem,
+solved by the methods cited in Section~\ref{sec:introduction}, and is taken as
+given here.
+
+What makes the condition worth accepting is what it buys. Markov's inequality
+turns it into
+\begin{equation}
+  P[\mathcal E(Z)\geq1/\alpha]\leq\alpha
+  \qquad\text{for every }\alpha\in(0,1),
+  \label{eq:markov}
+\end{equation}
+so a profile whose score at an outcome exceeds $1/\alpha$ can be treated as
+evidence at level $\alpha$ against it. This holds at every $\alpha$
+simultaneously and under every member of the model, so a single profile serves
+every threshold a reader might apply with no correction for inspecting
+several. A companion result \citep{Grunwald2024,Koning2024posthoc} extends it
+to thresholds chosen after the scores are seen, so evidence can be published
+before anyone fixes how strictly to read it.
+
+One further consequence matters below. Only the hardest constraint in
+\eqref{eq:evalue_def} does any work: the profile is valid exactly when its
+largest expectation across the model is at most one, so validity is settled by
+the single member under which the profile looks largest. A profile
+that spends the budget exactly under some member, rather than leaving slack
+everywhere, is the interesting case, since any leftover could be spent on
+sharper evidence. Every profile constructed in this thesis is of that kind. The
+examples below use the simplest model, a single distribution
+$\mathcal P=\{P_0\}$, to keep the arithmetic checkable, and
+Section~\ref{sec:market} uses a genuinely composite one.
+
+\subsection{From Prediction Sets to the Weighted Rule}\label{sec:rule}
+
+A profile has to become an action. For a prediction set this is done by the
+rule \eqref{eq:intro_set_rule}, which protects against the worst outcome the
+set still admits. The profile analogue replaces the worst case over a set by a
+worst case weighted by the evidence. This is the weighted worst-case rule of
+\citet{KoningvanMeer2025},
+\begin{equation}
+  \delta(\mathcal E)\in\argmin_{d\in\mathcal D}C(d;\mathcal E),
+  \qquad
+  C(d;\mathcal E):=\max_{z\in\mathcal Z}
+  \frac{L(d,z)}{\mathcal E(z)},
+  \label{eq:wl_decision}
+\end{equation}
+with the conventions $x/0=\infty$ for $x>0$ and $0/0=0$. Dividing by the score
+does not declare an outcome impossible: it discounts a loss that would be
+incurred only if the outcome occurred, in proportion to the evidence against
+it.
+
+The number $C(d;\mathcal E)$ is called the certificate of $d$, because it
+bounds expected loss. It depends only on the loss row and the profile, so it
+is known before the outcome is. Assume $C(d;\mathcal E)<\infty$, since otherwise the
+bound is vacuous. By definition of the maximum,
+$L(d,z)\leq C(d;\mathcal E)\,\mathcal E(z)$ at every outcome, so for any
+$P\in\mathcal P$,
+\begin{equation}
+  \mathbb E_{P}[L(d,Z)]
+  \leq C(d;\mathcal E)\,\mathbb E_{P}[\mathcal E(Z)]
+  \leq C(d;\mathcal E).
+  \label{eq:cert_bound}
+\end{equation}
+The final inequality is where validity is used, and without it a profile could
+be scaled up to make any certificate small. The bound holds under every
+member of the model at once, and it concerns expected loss, not every realised
+loss. The same pointwise inequality also gives a tail bound. A loss of at
+least $C(d;\mathcal E)/\alpha$ forces a score of at least $1/\alpha$, so by
+\eqref{eq:markov}
+\[
+  P\bigl[L(d,Z)\geq C(d;\mathcal E)/\alpha\bigr]\leq\alpha
+  \qquad\text{for every }\alpha\in(0,1)\text{ and every }P\in\mathcal P.
+\]
+
+The rule may have several minimisers. An action is weakly selected when
+it is one of them, and strictly selected when its certificate beats every
+competitor. That distinction matters once an action is imposed as a constraint
+in Section~\ref{sec:result2}.
+
+\subsection{A Worked Example}\label{sec:setup}
+
+A bettor stakes money on a football match with two outcomes, a win for $A$ or
+a win for $B$. They may back $A$ through $d_1$ or hedge the position through
+$d_2$. A losing bet costs twice as much as a hedge that turns out to have been
+unnecessary. Listing each action's loss if $A$ wins and then if $B$ wins,
+\begin{equation}
+  L(d_1,\cdot)=(0,8),\qquad L(d_2,\cdot)=(4,0),
+  \label{eq:two_loss}
+\end{equation}
+so backing $A$ loses $8$ only if $B$ wins, and the hedge loses $4$ only if $A$
+wins. The model is the single distribution $\mathcal P=\{P_0\}$ with
+$P_0=(1/2,1/2)$, an even match, and the bettor's belief is
+$\widehat P_1=(0.75,0.25)$, favouring $A$.
+
+The two criteria already disagree about what to do. The certificate bounds
+expected loss under the model \eqref{eq:cert_bound}, so a decision-maker who
+wants that guarantee compares actions by their average loss against $P_0$,
+\[
+\begin{aligned}
+\mathbb E_{P_0}[L(d_1,Z)]&=\tfrac12(0)+\tfrac12(8)=4,\\
+\mathbb E_{P_0}[L(d_2,Z)]&=\tfrac12(4)+\tfrac12(0)=2,
+\end{aligned}
+\]
+and the hedge $d_2$ comes out ahead. A decision-maker who trusts the belief
+averages under $\widehat P_1$ instead,
+\[
+\begin{aligned}
+\mathbb E_{\widehat P_1}[L(d_1,Z)]&=0.75(0)+0.25(8)=2,\\
+\mathbb E_{\widehat P_1}[L(d_2,Z)]&=0.75(4)+0.25(0)=3,
+\end{aligned}
+\]
+so the belief favours backing $A$. Neither answer is wrong. They answer
+different questions, and the decision-maker has to say which one they are
+asking.
+
+Now compare the two decision rules on this example. A profile becomes a
+prediction set by keeping every outcome whose score stays below $1/\alpha$,
+since by \eqref{eq:markov} a larger score counts as evidence at level $\alpha$
+against it. Fix $\alpha=1/2$, so the threshold is $2$, and take two valid
+profiles: the
+flat profile $\mathcal E^{\mathrm{flat}}=(1,1)$, which spends its budget
+evenly, and a graded profile $\mathcal E^{\mathrm{graded}}=(2/3,4/3)$, which
+shifts weight onto $B$. Both are valid, since each averages to one under
+$P_0$.
+
+Neither profile reaches the threshold at either outcome, so both produce the
+same prediction set $S=\{A,B\}$, and \eqref{eq:intro_set_rule} cannot tell them apart.
+In both cases the worst loss over $S$ is $8$ for the bet and $4$ for the
+hedge, so each backs the hedge.
+
+The weighted rule separates them, because it divides outcome by outcome before
+taking the worst case. Under the flat profile,
+\[
+  C(d_1)=\max\bigl(0/1,\; 8/1\bigr)=8,
+  \qquad
+  C(d_2)=\max\bigl(4/1,\; 0/1\bigr)=4,
+\]
+so $d_2$ wins outright, exactly as the prediction set concluded. The graded
+profile changes the divisors,
+\[
+  C(d_1)=\max\bigl(0\big/\tfrac23,\; 8\big/\tfrac43\bigr)=6,
+  \qquad
+  C(d_2)=\max\bigl(4\big/\tfrac23,\; 0\big/\tfrac43\bigr)=6,
+\]
+and the two are now equal, so $d_1$ becomes available. The extra score on $B$
+deflates the only outcome in which backing $A$ costs anything, while the score
+removed from $A$ inflates the cost of hedging. The consequence is a different
+action, not merely a different number, and under the belief $d_1$ costs $2$
+where $d_2$ costs $3$. The dependence on $\alpha$ disappears too, since
+\eqref{eq:wl_decision} never thresholds the profile, so no coverage level
+enters the choice of action.
+
+This is the whole problem in miniature: two valid profiles recommend
+different actions, and validity does not choose between them.
+
+A second example shows that the disagreement can also turn on a single
+outcome that the belief considers rare but that is costly for most actions.
+Showing this needs a third outcome, a draw, which settles both side bets as
+losses at once. The bettor may back either side through $d_A$ or $d_B$, or
+insure against the draw through $d_C$, which costs a premium whenever the
+match has a winner and pays only in the draw. Writing the outcomes as a win
+for $A$, a win for $B$, and a draw $C$,
+\begin{equation}
+  L(d_A,\cdot)=(0,2,10),\quad
+  L(d_B,\cdot)=(2,0,10),\quad
+  L(d_C,\cdot)=(4,4,0),
+  \label{eq:three_loss}
+\end{equation}
+with $\mathcal P=\{P_0\}$ for $P_0=(1/3,1/3,1/3)$ and belief
+$\widehat P_1=(0.6,0.3,0.1)$. The belief is confident about the side and
+dismissive about the draw, putting $0.60$ on $A$ but only $0.10$ on $C$, which is
+plausibly too low for football, where draws are common.
+
+The two criteria disagree here too. Against the model the averages are
+$(4,4,8/3)$, so protection points to $d_C$, while under the belief they are
+$(1.6,2.2,3.6)$, so the belief points to $d_A$. The draw decides it: $d_A$ and $d_B$ each
+expose the bettor to a loss of $10$ there, which $d_C$ avoids at the cost of never doing
+well. Section~\ref{sec:sim_danger} asks how wrong such a belief can be before
+trusting it stops paying.

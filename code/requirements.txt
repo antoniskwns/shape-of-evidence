@@ -1,0 +1,5 @@
+numpy
+matplotlib
+# only for extract_market_tape.py
+pandas
+pyarrow

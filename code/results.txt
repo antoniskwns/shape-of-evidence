@@ -1,0 +1,92 @@
+==============================================================================
+Sections 2.4 and 3.5: the worked examples
+==============================================================================
+
+Two outcomes: L(d1) = (0, 8), L(d2) = (4, 0), P0 = (1/2, 1/2), belief (0.75, 0.25)
+profile                             C(d1)    C(d2)  action  belief loss
+likelihood ratio (1.5, 0.5)         16.00     2.67      d2         3.00
+flat (1, 1)                          8.00     4.00      d2         3.00
+safe for d2 (2, 0)                    inf     2.00      d2         3.00
+safe for d1 (0, 2)                   4.00      inf      d1         2.00
+informative for d1 (2/3, 4/3)        6.00     6.00      d1         2.00
+log score of the informative profile: -0.232
+
+Three outcomes: P0 uniform, belief (0.6, 0.3, 0.1)
+profile                                  C(d_A)   C(d_B)   C(d_C)  action
+flat (1, 1, 1)                            10.00    10.00     4.00     d_C
+likelihood ratio (1.8, 0.9, 0.3)          33.33    33.33     4.44     d_C
+safe for d_C (1.5, 1.5, 0)                  inf      inf     2.67     d_C
+safe for d_A (0, 0.5, 2.5)                 4.00      inf      inf     d_A
+hand-picked (0.3, 0.7, 2.0)                5.00     6.67    13.33     d_A
+informative for d_A (9/5, 12/35, 6/7)     11.67    11.67    11.67     d_A
+log score, informative profile: +0.016
+log score, hand-picked profile: -0.760
+
+==============================================================================
+Section 4: the shopkeeper's order
+==============================================================================
+201 one-minute observations
+kick-off result prices (Spain, draw, Argentina): [0.4231 0.3238 0.2531]
+kick-off trophy prices (Spain, Argentina): [0.5863 0.4137]
+late wins 0.3238 against draw price 0.3238
+
+model members:
+  sides [0.5433 0.4567] -> [0.3363 0.207  0.2827 0.174 ]
+  sides [0.5 0.5] -> [0.3095 0.1905 0.3095 0.1905]
+  sides [0.45 0.55] -> [0.2786 0.1714 0.3405 0.2095]
+belief                 [0.4231 0.1632 0.2531 0.1606]
+worst member for d1    [0.2786 0.1714 0.3405 0.2095]
+likelihood ratio r     [1.5188 0.9521 0.7433 0.7666]
+
+worst-case expected loss [18.     15.2857 16.3251] -> d2 even split
+belief expected loss     [13.8738 14.943  17.0142] -> d1 mostly Spain
+
+likelihood ratio scaled down by 1.051 to be valid on the whole model
+profile                  C1       C2       C3               action  belief loss
+likelihood ratio     48.002   26.058   34.233        d2 even split       14.943
+flat                 35.000   19.000   31.000        d2 even split       14.943
+safe for d2          34.099   15.286   29.396        d2 even split       14.943
+safe for d1          18.000  234.000  450.000      d1 mostly Spain       13.874
+safe profile for d1: (0.0556, 0.1667, 1.6111, 1.9444), certificate 18.0000
+
+capped power family, 7200 (h, alpha) pairs
+  orders reached: ['d2 even split', 'd3 mostly Argentina']
+  d1 reached: no
+200000 random increasing shapes
+  orders reached: ['d2 even split', 'd3 mostly Argentina']
+  d1 reached: no
+
+prediction set and worst case over the set:
+  coverage  50%  |S| = 2  -> d2 even split
+  coverage  70%  |S| = 3  -> d2 even split
+  coverage  80%  |S| = 3  -> d2 even split
+  coverage  90%  |S| = 4  -> d2 even split
+  coverage  95%  |S| = 4  -> d2 even split
+
+historical late rate from 6/21 to 10/21:
+  criteria disagree at 5 of 5 rates
+  no capped power shape reaches d1 at 5 of those
+
+==============================================================================
+Section 3.3: the frontier for the bet d1
+==============================================================================
+t -> 0:   profile (0, 2), certificate 4.00, log score -> -inf
+t = 1/3:  profile (2/3, 4/3), certificate 6.00, log score -0.232
+
+==============================================================================
+Section 5.1: varying the belief's confidence
+==============================================================================
+belief's target bets for p >= 2/3; first bet on the grid at p = 0.668
+likelihood ratio bets for p <= 1/3; last bet on the grid at p = 0.332
+protective target and flat profile bet at 0 grid points
+
+==============================================================================
+Section 5.2: varying the cost ratio l/k
+==============================================================================
+the likelihood ratio takes the wrong action for 0.333 < l/k < 3.0
+
+==============================================================================
+Section 5.3: a belief that underrates the draw
+==============================================================================
+belief's target d_A and protective action d_C break even at c = 0.250 (exactly 1/4)
+A stays the most likely outcome until c = 2/5
