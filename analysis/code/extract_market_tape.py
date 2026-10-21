@@ -1,7 +1,7 @@
 """
-Build data/polymarket_match_odds.csv from the Polymarket order-book files.
+Build data/processed/polymarket_match_odds.csv from the Polymarket order-book files.
 
-Reads markets.parquet and snapshots.parquet (Marketlens dataset, see the
+Reads data/raw/markets.parquet and snapshots.parquet (Marketlens dataset, see the
 thesis bibliography) and writes the one-minute price series used by
 decision_pipeline.py. Needs pandas and pyarrow; the pipeline does not.
 
@@ -28,7 +28,9 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-DATA = Path(__file__).resolve().parent / "data"
+ROOT = Path(__file__).resolve().parent.parent
+RAW = ROOT / "data" / "raw"
+PROCESSED = ROOT / "data" / "processed"
 QUESTIONS = {
     "spain":     "Will Spain win on 2026-07-19?",
     "draw":      "Will Spain vs. Argentina end in a draw?",
@@ -39,8 +41,8 @@ END_MIN = 200.0
 
 
 def main():
-    markets = pd.read_parquet(DATA / "markets.parquet")
-    snaps = pd.read_parquet(DATA / "snapshots.parquet")
+    markets = pd.read_parquet(RAW / "markets.parquet")
+    snaps = pd.read_parquet(RAW / "snapshots.parquet")
     kickoff = int(markets[markets.question == QUESTIONS["draw"]].iloc[0].open_time_ms)
 
     def series(question):
@@ -70,7 +72,7 @@ def main():
     adv_spain = np.clip(interp["advance"], 0.0, 1.0)
 
     base = pd.Timestamp("2026-07-19 19:00:00+00:00")
-    out = DATA / "polymarket_match_odds.csv"
+    out = PROCESSED / "polymarket_match_odds.csv"
     with out.open("w", newline="") as fh:
         w = csv.writer(fh)
         w.writerow(["timestamp", "spain", "draw", "argentina",

@@ -26,9 +26,9 @@
 
 % ── Tables and figures ───────────────────────────────────────────────────────
 \usepackage{graphicx}
-% Figures have one source of truth: code/figures/. The relative path keeps the
+% Figures have one source of truth: analysis/results/figures/. The relative path keeps the
 % paper reproducible without maintaining a second, potentially stale, copy.
-\graphicspath{{../code/figures/}{assets/}{./}}
+\graphicspath{{../analysis/results/figures/}{assets/}{./}}
 \usepackage{booktabs}
 \usepackage{array}
 % Booktabs rules need room to breathe; the default row height crowds them.
@@ -150,8 +150,3 @@
 % ═════════════════════════════════════════════════════════════════════════════
 \DeclareMathOperator*{\argmin}{arg\,min}
 
-% Auto-updating "Month Year"
-\newcommand{\monthyear}{%
-  \ifcase\month\or January\or February\or March\or April\or May\or June\or
-  July\or August\or September\or October\or November\or December\fi
-  \space\number\year}

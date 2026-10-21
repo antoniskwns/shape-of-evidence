@@ -17,8 +17,8 @@ __pycache__/
 # macOS
 .DS_Store
 
-# Not part of the public repository: supervisor feedback, copies of the
-# cited papers, and the submission archive.
-feedback/
-literature/
+# Not part of the public repository: the defence slides and script,
+# supervisor feedback on the drafts, and the submission archive.
+defence/
+paper/feedback/
 *.zip

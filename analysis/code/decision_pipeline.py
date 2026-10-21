@@ -10,7 +10,8 @@ action with the smallest one. The script reproduces
   Section 4           the shopkeeper application and Table 2 (Figure 3)
   Section 5           the controlled simulations (Figures 4, 5)
 
-and writes the figures to figures/ and all reported numbers to results.txt.
+and writes the figures to results/figures/ and all reported numbers to
+results/results.txt.
 Everything is exact except the random-shape search of Section 4.4, which
 uses a fixed seed.
 
@@ -32,10 +33,11 @@ from matplotlib.patches import Rectangle
 # ---------------------------------------------------------------------------
 # Paths and output
 # ---------------------------------------------------------------------------
-OUT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parent.parent
+OUT = ROOT / "results"
 FIG = OUT / "figures"
-MARKET_CSV = OUT / "data" / "polymarket_match_odds.csv"
-FIG.mkdir(exist_ok=True)
+MARKET_CSV = ROOT / "data" / "processed" / "polymarket_match_odds.csv"
+FIG.mkdir(parents=True, exist_ok=True)
 
 LINES = []
 
